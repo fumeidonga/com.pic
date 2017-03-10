@@ -1,0 +1,17 @@
+1. 拿到图片
+   查看网页源代码
+   
+   $("#spec-list ul li img")
+   
+   <div id="spec-list" class="jqzoom_slideBox fl pr">
+	   <ul class="pa">
+		   <li class="cur">
+		   		<img big="http://xs3.op.xywy.com/api.iu1.xywy.com/wksc/20160807/cc8450ab96fe64791c742a040900189395297.jpg" class="fl" 
+		   			src="http://xs3.op.xywy.com/api.iu1.xywy.com/wksc/20160807/cc8450ab96fe64791c742a040900189395297.jpg" />
+		   </li>
+	   </ul>
+   </div>
+   
+2, 下载jsoup.jar 可以像jquery一样来操作网页元素
+
+3, 

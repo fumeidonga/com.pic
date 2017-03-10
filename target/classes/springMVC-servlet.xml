@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- ============================= spring mvc 配置 begin============================= -->
+
+	<!-- 激活@Required, @Autowired, @Resource 等标注 -->
+	<context:annotation-config></context:annotation-config>
+	
+	<!-- ioc 容器自动扫描 controler 层注解 -->
+	<context:component-scan base-package="com.pic.controler">
+	</context:component-scan>
+	
+
+	<!-- 会自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter 
+		两个bean -->
+	<!-- 是spring MVC为@Controllers分发请求所必须的 -->
+	<mvc:annotation-driven />
+
+	<!-- 静态资源处理 -->
+	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+
+
+	<!-- <mvc:default-servlet-handler /> -->
+
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="zh_CN" />
+	</bean>
+
+	<!-- 完成请求和注解POJO的映射 需要 jackson*.jar 包 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<!-- 支持返回json(避免IE在ajax请求时，返回json出现下载 ) -->
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 配置ViewResolver 可以配置多个 ViewResolver 使用 order 属性来排序，所有的ViewResolver 中 InternalResourceViewResolver 必须在最后一个-->
+	<!-- 告诉dispatchServlet 用哪个ViewResolver 来获取view -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+			
+		<!-- 前缀 -->
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- ============================= spring mvc 配置 end============================= -->
+
+</beans>
